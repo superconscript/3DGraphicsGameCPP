@@ -211,10 +211,10 @@ bool gameEngine::createGLWindow(int width, int height, int flags)
 	
 	Shader* gameEngine::createShader(const char* vertexShaderPath, const char* fragmentShaderPath) // create a shader
 	{
-		Shader* createdShader = new Shader(vertexShaderPath, fragmentShaderPath);
-		return createdShader;
+		return new Shader(vertexShaderPath, fragmentShaderPath);
+	
 	}
-
+	
 bool gameEngine::createGLProgram() {
 	GLenum err = glewInit();
 	bool success = true;
@@ -226,130 +226,20 @@ bool gameEngine::createGLProgram() {
 	}
 	else {
 		
-
-		p = glGetString(GL_VERSION);
-			gProgramID = glCreateProgram();
-		//glManager->RenderSomething(gProgramID);
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		const GLchar* vertexShaderSource[] =
-		{
-			"#version 330 core\nlayout (location = 0) in vec3 aPos;\nlayout (location = 1) in vec3 aColor;\nout vec3 ourColor;\nvoid main()\n { gl_Position = vec4( aPos.x, aPos.y, aPos.z, 1.0);\nourColor = aColor;\n }\0"
-		};
-		//set vertex source
-		glShaderSource(vertexShader, 1, vertexShaderSource, NULL);
-		// compile vertex source
-		glCompileShader(vertexShader);
-
-		//check vertex shader for errors
-		GLint vShaderCompiled = GL_FALSE;
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vShaderCompiled);
-		if (vShaderCompiled != GL_TRUE)
-		{
-			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unable to compile vertex shader:", infoLog, nullptr);
-			success = false;
-		}
-		else {
-			// attach vertex shader to program
-			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unable to compile vertex shader:", infoLog, nullptr);
-			glAttachShader(gProgramID, vertexShader);
-
-			//create fragment shader
-			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-			//get fragment source
-			const GLchar* fragmentShaderSource[] = { "#version 330 core\nout vec4 FragColor;\nin vec3 ourColor;\n void main()\n { FragColor = vec4(ourColor, 1.0);}\0" };
-
-
-
-			//set fragment source
-			glShaderSource(fragmentShader, 1, fragmentShaderSource, NULL);
-
-			//Compile fragment source
-			glCompileShader(fragmentShader);
-			//check fragment shader for errors
-			GLint fShaderCompiled = GL_FALSE;
-			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fShaderCompiled);
-			if (fShaderCompiled != GL_TRUE) {
-				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-				SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "couldn't compile the fragment shader", infoLog, nullptr);
-				success = false;
-			}
-			else {
-				// attach fragment shader to program
-				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-				SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unable to compile vertex shader:", infoLog, nullptr);
-				glAttachShader(gProgramID, fragmentShader);
-
-				//link program
-				glLinkProgram(gProgramID);
-				// check for errors
-				GLint programSuccess = GL_TRUE;
-				glGetProgramiv(gProgramID, GL_LINK_STATUS, &programSuccess);
-				if (programSuccess != GL_TRUE)
-				{
-					glGetProgramInfoLog(gProgramID, 512, NULL, infoLog);
-					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "link Failed", infoLog, nullptr);
-					success = false;
-				}
-				else {
-					glClearColor(0.f, 0.5f, 0.f, 1.0f);
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-					GLfloat vertices[] = {
-						//position				//colors
-						0.5f, -0.5f, 0.0f,	 1.0f, 0.0f, 0.0f, // botom right
-					   -0.5f, -0.5f, 0.0f,	 0.0f, 1.0f, 0.0f, //bottom left
-						0.0f, 0.5f, 0.0f,	 0.0f, 0.0f, 1.0f //top
-					};
-					//Get vertex Attribute location
-					GLuint VBO;
-					glGenBuffers(1, &VBO);
-					glBindBuffer(GL_ARRAY_BUFFER, VBO);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	}
 				
 
-					glUseProgram(gProgramID); // Program with all our shaders
-					glDeleteShader(vertexShader); // dont need them anymore
-					glDeleteShader(fragmentShader); // dont need them anymore
 
-					//GLuint VAO;
-					glGenVertexArrays(1, &VAO);
-					glBindVertexArray(VAO);
 
-					glBindBuffer(GL_ARRAY_BUFFER, VBO);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-				//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-				//	glEnableVertexAttribArray(0); // thats that
-
-						//Position Attributes
-					glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-					glEnableVertexAttribArray(1);
-					//Color attributes
-					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-					glEnableVertexAttribArray(0);
-				//	if (gVertextPos2dLocation == -1)
-				//	{
-				//		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Init Failed", "LVertexPos2d is not a valid glsl progr variable", nullptr);
-				//		success = false;
-				//	}
-				//	else
-				//	{
-						// initialize clear color
-
-				//	glManager->renderTriangle(VAO, VBO, gProgramID);
-					//SDL_GL_SwapWindow(glWindow);
 					isGLRunning = true;
-				}
-			}
-		}
-	}
+
+			
+		
+
 		return success;
 	//	SDL_GL_SwapWindow(glWindow);
 	}
-
+	
 
 
 
@@ -409,7 +299,7 @@ void gameEngine::init(const char* title, int xpos, int ypos, int width, int heig
 	// Create our Paddle's
 
 	 //This is crashing, why?
-	//keyMan = new KeyboardManager(0);
+	keyMan = new KeyboardManager(0);
 	
 }
 
@@ -570,8 +460,82 @@ void gameEngine::handleEvents() // Handles Keyboard Events, windows closing etc.
 	}
 }
 
+GLfloat newVertices[] = {	
+	//position		//color
+	
+	//Sky
+//Left triangle
+	-1.0f, 1.0f, 0.0f,	 0.2f, 0.2f, 0.9f, // top Left
+   -1.0f, 0.0f, 0.0f,	 0.4f, 0.2f, 0.2f, //bottom left
+	1.0f, 0.0f, 0.0f,	 0.0f, 0.0f, 0.0f, //bottom right
+//Right triangle
+	1.0F, 1.0f, 0.0f,	0.2f, 0.2f, 0.9f,	// top right
+	//1.0f, -1.0f, 0.0f,	 0.4f, 0.2f, 0.2f//,
+	//0.0f, 1.8f, 0.0f,	 0.0f, 0.0f, 0.0f 
+};
+GLuint squareIndices[6]{
+// Sky
+	0, 1, 2, // Left triangle
+	0, 2, 3 // Right triangle
+// Road
+
+};
+GLuint EBO;
+//glGenBuffers(1, &EBO); Since we're sending it we dont need it
+
+GLuint newVAO = 0;
+GLuint newVBO = 0;
+int updateCounter{ 0 };
+glm::vec3 rotationAxis = glm::vec3(0.0f, 0.5f, 0.0f);
+float zoomSensitivity = 0.04f;
+float moveSensitivity = 0.01f;
+float angleSensitivity = 5.0f;
 void gameEngine::glUpdate() { // Handle our OpenGL update
 	//glManager->renderTriangle(VAO, gVBO, gProgramID);
+	if (updateCounter == 200) {
+		//glManager->updateVBO(newVBO, newVAO, EBO, newVertices, sizeof(newVertices), squareIndices, sizeof(squareIndices));
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "update vertices", "vertices have been updated", NULL);
+		//glManager->generateRoad(-1.0f, 0.8f, -0.5f, 1.0f, 0.8f, -0.5f, -0.7f, 0.0f, 5.1f, 0.4f, 0.0f, 5.1f, 20, 100);	
+		//						x1   y1     z1     x2     y2     z2    xf1   yf1   zf1    xf2   yf2   zf2  res   distance
+		//glManager->generateRoad2(100);
+		//glManager->generateRoad3(20, 20, 1, 1); works but rows aren't yet optimised
+		glManager->generateRoad4(200, 200, 0.1f, 0.1f); // doesn't work yet... UPDATE It Seems to work
+	}
+// Camera Movement Update
+	if (keyMan->getKeyValue(0) == 1) { 
+		glManager->updateCameraView(glm::vec3(0.0f, -1 * moveSensitivity, 0.0f));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved up", NULL);
+	}
+	if (keyMan->getKeyValue(1) == 1) {
+		glManager->updateCameraView(glm::vec3(0.0f, 0.0f, zoomSensitivity));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved in", NULL);
+	}
+	if (keyMan->getKeyValue(2) == 1) {
+		glManager->updateCameraView(glm::vec3(moveSensitivity, 0.0f, 0.0f));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved left", NULL);
+	}
+	if (keyMan->getKeyValue(3) == 1) {
+		glManager->rotateCameraView(angleSensitivity, rotationAxis);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've turned left", NULL);
+	}
+	if (keyMan->getKeyValue(4) == 1) {
+		glManager->updateCameraView(glm::vec3(-1 * moveSensitivity, 0.0f, 0.0f));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved right", NULL);
+	}
+	if (keyMan->getKeyValue(5) == 1) {
+		glManager->rotateCameraView(-1 * angleSensitivity, rotationAxis);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've turned right", NULL);
+	}
+	if (keyMan->getKeyValue(6) == 1) {
+		glManager->updateCameraView(glm::vec3(0.0f, moveSensitivity, 0.0f));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved down", NULL);
+	}
+	if (keyMan->getKeyValue(7) == 1) {
+		glManager->updateCameraView(glm::vec3(0.0f, 0.0f, -1 * zoomSensitivity));
+	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved out", NULL);
+	}
+
+	updateCounter++;
 }
 
 
@@ -593,6 +557,7 @@ void gameEngine::sdlUpdate() { // Handle SDL udpate stuff
 						createGLProgram();
 						
 				//	glManager->RenderSomething(glWindow);
+						SDL_RaiseWindow(glWindow);
 					}
 
 					else {
@@ -664,9 +629,16 @@ void gameEngine::glRender() // Rendering for OPENGL
 //	SDL_GL_SwapWindow(glWindow);
 	//glManager->renderTriangle();
 	//glClearColor(0.f, 0.5f, 0.f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glManager->renderTriangle(VAO, gVBO, gProgramID);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	//glManager->renderTriangle(newVAO, newVBO, EBO, gProgramID);
+	//glManager->renderMovingTriangleMat(newVAO, newVBO);
 
+	//glManager->renderRoad();
+
+	glManager->renderRoad2();
+
+	//glManager->renderMovingTriangle(newVAO, newVBO);
 }
 
 void gameEngine::render() { // Rendering handler

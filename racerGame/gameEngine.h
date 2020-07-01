@@ -41,14 +41,16 @@ public:
 	bool createGLProgram(); // create shader/ vertex program
 		//Shader
 	Shader* createShader(const char* vertexShaderPath, const char* fragmentShaderPath); // This is to get by SDL_OpenGL wacky stuff
+	void useShader(GLuint ID) { glUseProgram(ID); };
+
 private:
 	bool isRunning;
 	bool isGLRunning;
 	bool isSDLRunning;
-	GLuint gVBO = 0;
-	GLuint gIBO = 0;
-	GLuint gProgramID;
-	GLuint VAO;
+//	GLuint gVBO = 0;
+//	GLuint gIBO = 0;
+//	GLuint gProgramID;
+	//GLuint VAO;
 	int cnt = 0;
 	SDL_Window* window;
 	SDL_Window* glWindow;

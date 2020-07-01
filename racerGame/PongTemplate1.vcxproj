@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GL\GLEW\include;C:\GL\SDL2\include;C:\GL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GL\glm;C:\GL\GLEW\include;C:\GL\SDL2\include;C:\GL\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\GL\GLEW\lib\Release\Win32;C:\GL\SDL2\lib\x86;C:\GL\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\GL\GLEW\include;C:\GL\SDL2_image-2.0.5\include;C:\GL\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GL\glm;C:\GL\GLEW\include;C:\GL\SDL2_image-2.0.5\include;C:\GL\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="gameEngine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="gameEngine.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Shader.h" />
@@ -171,10 +173,20 @@
     <Image Include="assets\go.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\mountainShader.fs" />
+    <None Include="shaders\mountainShader.vs" />
+    <None Include="shaders\movingShader.fs">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </None>
+    <None Include="shaders\movingShader.vs">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </None>
     <None Include="shaders\shader.vs">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </None>
+    <None Include="shaders\squareShader.fs" />
+    <None Include="shaders\squareShader.vs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.fs">
