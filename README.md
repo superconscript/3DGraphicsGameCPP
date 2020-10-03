@@ -4,6 +4,8 @@
 ----------------------------------------------------------------
 ### This project is coded with C++, using SDL 2 for input, audio, game menu rendering, and window creation with OpenGL being used for the actual game graphics.
 ----------------------------------------------------------------
+![Screenshot](/CPP_OpenGL_ScreenShot.png?raw=true "Screenshot")
+
 # The Rough Idea
 
  ## SDL 2 will be used to render Game Menu's (options, launch, etc) (I've created the Menu Manager and launcher)
