@@ -4,10 +4,11 @@
 	
 
 
-OpenGLManager::OpenGLManager(SDL_Window* glWindow, gameEngine* gameEngine ) {
+OpenGLManager::OpenGLManager(SDL_Window* glWindow, gameEngine* gameEngine, float* deltaTime ) {
 	glewInitialize();
 	this->glWindow = glWindow;
 	this->gEngine = gameEngine;
+	this->deltaTime = deltaTime;
 //	initShaders();
 	this->shaderInitSuccess = true;
 	triangleShader = this->gEngine->createShader("shaders/shader.vs", "shaders/shader.fs");
@@ -51,15 +52,18 @@ OpenGLManager::OpenGLManager(SDL_Window* glWindow, gameEngine* gameEngine ) {
 	}
 
 
-	GLfloat initVertices[] = {
-		0.0f, 0.0f, 0.0f,	1.0f, 0.0f, 1.0f,
-		0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 0.5f,
-		-0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 0.0f
-	};
+//	GLfloat initVertices[] = {
+	//	0.0f, 0.0f, 0.0f,	1.0f, 0.0f, 1.0f,
+	//	0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 0.5f,
+	//	-0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 0.0f
+	//};
 	glEnable(GL_DEPTH_TEST);
-	newVAO = 1;
-	newVBO = 1;
-	updateVBO(newVBO, newVAO, initVertices, sizeof(initVertices) );
+	//newVAO = 1;
+	//newVBO = 1;
+	//updateVBO(newVBO, newVAO, initVertices, sizeof(initVertices) );
+	//this->gameCamera = new Camera(this->deltaTime);
+	
+	this->gameCamera = new Camera(this->deltaTime, 5.0f, glm::vec3(0,10,0));
 }
 OpenGLManager::~OpenGLManager() {
 
@@ -688,6 +692,9 @@ void OpenGLManager::generateRoad2( GLuint squares) {
 		}
 */
 	// Alt try
+
+//generateRoad2
+/*
 void OpenGLManager::generateRoad2(GLuint squares) {
 
 	GLuint x, y, z;
@@ -759,7 +766,7 @@ void OpenGLManager::generateRoad2(GLuint squares) {
 			}
 			// indices come in sets of 3
 		}
-		*/
+		
 	}
 	// Lets do our indices
 	for (int j = 0; j < triangles; j++) {
@@ -793,7 +800,11 @@ void OpenGLManager::generateRoad2(GLuint squares) {
 	glEnableVertexAttribArray(0);
 }
 
+*/
+
 // Generate Road In Grid
+//generateRoad3
+/*
 void OpenGLManager::generateRoad3(GLuint gridWidth, GLuint gridLength, GLuint squareWidth, GLuint squareLength) {
 
 	GLuint x, y, z;
@@ -870,7 +881,7 @@ void OpenGLManager::generateRoad3(GLuint gridWidth, GLuint gridLength, GLuint sq
 						}
 						// indices come in sets of 3
 					}
-					*/
+					
 		}
 }
 	// Lets do our indices
@@ -914,7 +925,9 @@ void OpenGLManager::generateRoad3(GLuint gridWidth, GLuint gridLength, GLuint sq
 // creates grid, however edge of rows are messed up since it creates duplicate vertices 
 
 
-//Generate road to grid Row Fix attempt
+*/
+
+//Generate road to grid Row Fix attempt (Works but there's memory leak)
 void OpenGLManager::generateRoad4(GLuint gridWidth, GLuint gridLength, GLfloat squareWidth, GLfloat squareLength) {
 
 	GLuint x, y, z;
@@ -1124,6 +1137,217 @@ void OpenGLManager::generateRoad4(GLuint gridWidth, GLuint gridLength, GLfloat s
 	}
 }
 
+//Memory Leak Fix
+void OpenGLManager::generateRoad5(GLuint gridWidth, GLuint gridLength, GLfloat squareWidth, GLfloat squareLength) {
+
+	GLuint x, y, z;
+	float redValue = 0.5f;
+	float greenValue = 0.1f;
+	float blueValue = 0.9f;
+	GLuint triangles = gridWidth * gridLength * 2;
+	GLuint trianglesInRow = gridLength * 2;
+	//	int vertexCounter;
+	GLuint initialZ = 0;
+	GLfloat zStep = squareLength;
+	GLuint colorStep = 100;
+	// Lets create a square
+	// indices = squares * 3;
+	// Initial 2 points no matter what
+	for (x = 0; x < gridWidth * 2; x++) {
+		for (y = 0; y <= gridLength; y++) { // x = 0 is the initial 2 points
+		//	float zValue = -1 * (x * 10);
+			float zValue = initialZ + (zStep * y);
+			float yValue = (sinf(y) * 10);
+			float randSeed = (rand() * SDL_GetTicks()) % 5;
+			// 2 points per square
+		//Left Side
+			roadVBOVECTOR.push_back((squareWidth * x)); //x  Move over twice the square width (since we're not sharing vertices)
+			//roadVBOVECTOR.push_back(0.0f);
+			roadVBOVECTOR.push_back((sin(y + randSeed) * 5) + 4);
+			roadVBOVECTOR.push_back(-1 * zValue);
+			//Color
+			//roadVBOVECTOR.push_back(redValue);
+			roadVBOVECTOR.push_back(((float)((int)yValue % colorStep)) / colorStep);
+			//	roadVBOVECTOR.push_back(greenValue);
+			roadVBOVECTOR.push_back(x / gridWidth);
+			roadVBOVECTOR.push_back(blueValue);
+
+
+			//Right Side
+			/*
+			roadVBOVECTOR.push_back((squareWidth * (x + 1) * 2)); //x
+			//roadVBOVECTOR.push_back(0.0f);
+			roadVBOVECTOR.push_back(0.0f);
+			roadVBOVECTOR.push_back(-1 * zValue);
+			//Color
+			//roadVBOVECTOR.push_back(redValue);
+			roadVBOVECTOR.push_back(((float)((int)yValue % colorStep)) / colorStep);
+			roadVBOVECTOR.push_back(((float)x) / ((float)gridLength));
+			roadVBOVECTOR.push_back(blueValue);
+			*/
+
+			/*
+					for (y = 0; y < (triangles); y++) {
+
+						for (z = 0; z < 3; z++) { // 3 points in triangle
+							// 4 Vertices for square, 6 indices
+					//Left Side
+
+
+							roadVBOVECTOR.push_back(-1); //x
+							roadVBOVECTOR.push_back(0.5f);
+							roadVBOVECTOR.push_back(zValue);
+							//Color
+							roadVBOVECTOR.push_back(redValue);
+							roadVBOVECTOR.push_back(greenValue);
+							roadVBOVECTOR.push_back(blueValue);
+							//Right Side
+							roadVBOVECTOR.push_back(1); //x
+							roadVBOVECTOR.push_back(0.5f);
+							roadVBOVECTOR.push_back(zValue);
+							//Color
+							roadVBOVECTOR.push_back(redValue);
+							roadVBOVECTOR.push_back(greenValue * sin(((float)y) / 2));
+							roadVBOVECTOR.push_back(blueValue);
+
+
+							//Indices
+
+
+							//roadIndices.push_back(y + z); // 4 need 2 more
+
+						}
+						// indices come in sets of 3
+					}
+					*/
+		}
+	}
+	// Lets do our indices
+	//vertices in row = gridLength *2
+	/*
+	for (GLuint j = 0; j < triangles; j++) {
+		// for each triangle
+		for (int k = 0; k < 3; k++) { // triangle has 3 points
+			roadIndices.push_back(j + k);
+		}
+	}
+	*/
+	/*
+		for (GLuint i = 0; i < gridWidth; i++) { // for each row
+			for (GLuint j = 0; j < 2; j++) {// for each Row Block (when pattern repeats)
+
+				//First row in Pattern
+				for (GLuint k = 0; k < trianglesInRow; k++) { // for each triangle in a row
+					for (GLuint l = 0; l < 3; l++) { // for each vertice in that triangle
+						roadIndices.push_back(i + k + l);
+
+					}
+
+				//Second row in Pattern
+					for (GLuint r = 0; r < trianglesInRow; k++) { // the second one with weird stuff
+						for (GLuint s = 0; s < 3; s++) { // for each vertice in this row
+							//bottom Left indice = ( 2 * current row) + 1;
+							// top Left =
+							roadIndices.push_back((i *))
+						}
+
+				}
+				}
+			}
+		}
+		*/
+		//GLuint patternBlocks = gridWidth / 2; // This will only work if gridWidth is an even number
+	GLuint pointsInRow = gridLength + 1;// points in single row (column)
+	GLuint bottomLeftIndice, bottomRightIndice, topLeftIndice, topRightIndice;
+	//bool rowO = true;
+	for (GLuint i = 0; i < gridWidth; i++) { // for each row
+	//	for (GLuint j = 0; j < 2; j++) {// for each Row Block (when pattern repeats)
+		/*
+		if (i % 2 != 0) { // if odd
+			// Do the weird row stuff
+			for (GLuint r = 0; r <= gridLength; r++) { // the second one with weird stuff
+
+
+				// For each square
+			//	int tCount = 0;
+
+				// First Value = [ (row - 1) * (PointsInRow) / 2] + 1
+				// Second Value = (PointsInRow - 1) + FirstValue
+				GLuint FirstValue = ((i - 1) * pointsInRow / 2) + 1 + (2 * r); // 2 *r is what square you're at
+				GLuint SecondValue = (FirstValue + pointsInRow - 1);
+				GLuint ThirdValue = FirstValue + 2;
+				GLuint FourthValue = SecondValue + 2;
+
+				//First Triangle of Square
+				roadIndices.push_back(FirstValue);
+				roadIndices.push_back(SecondValue);
+				roadIndices.push_back(ThirdValue);
+
+				//Second Triangle of Square
+				roadIndices.push_back(SecondValue);
+				roadIndices.push_back(ThirdValue);
+				roadIndices.push_back(FourthValue);
+				/*
+				roadIndices.push_back(1 + (i * 2 * pointsInRow) + r); // Bottom Left
+				roadIndices.push_back(1 + (i * 2 * pointsInRow) + r + 3); //Bottom right
+				roadIndices.push_back(1 + (i * 2 * pointsInRow) + r + 2);//top left
+				*/
+
+
+				//	}
+				//}
+				//*/
+			//	else { // If normal
+						//First row in Pattern Block
+		for (GLuint k = 0; k < gridLength; k++) { // for each triangle in a row
+			//for (GLuint l = 0; l < 3; l++) { // for each vertice in that triangle
+			bottomLeftIndice = (i * pointsInRow) + k;
+			bottomRightIndice = (((i + 1) * pointsInRow) + k);
+			//GLuint topLeftIndice = (((i)*pointsInRow) + k + 3);
+			topLeftIndice = bottomLeftIndice + 1;
+			topRightIndice = bottomRightIndice + 1;
+			//roadIndices.push_back(	(i * pointsInRow) + k ); // bottom left;
+			//roadIndices.push_back(((i + 1) * pointsInRow) + k); // bottom right; (adjacent row)
+		//	roadIndices.push_back(((i)* pointsInRow) + k + 3); // top left;
+	//Triangle 1
+			roadIndices.push_back(bottomLeftIndice); // bottom left;
+			roadIndices.push_back(bottomRightIndice); // bottom right; (adjacent row)
+			roadIndices.push_back(topLeftIndice); // top left;
+	//Triangle 2
+		 // bottom left;
+			roadIndices.push_back(bottomRightIndice); // bottom right; (adjacent row)
+			roadIndices.push_back(topLeftIndice); // top left;
+			roadIndices.push_back(topRightIndice);
+
+			//}
+		}
+		//}
+
+		// We need to create the EBO
+
+	// Actual Buffer Stuff;
+		glGenBuffers(1, &this->roadVBO); // controls our vertice information
+		glGenBuffers(1, &this->roadEBO); // tells us how to render the quads
+
+	// GEN and BIND our VAO
+		glGenVertexArrays(1, &this->roadVAO);
+		glBindVertexArray(this->roadVAO);
+		// Bind our VBO
+		glBindBuffer(GL_ARRAY_BUFFER, this->roadVBO);
+		glBufferData(GL_ARRAY_BUFFER, roadVBOVECTOR.size() * sizeof(GLfloat), roadVBOVECTOR.data(), GL_DYNAMIC_DRAW);
+		// Bind our Index / Element stuff
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->roadEBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->roadIndices.size() * sizeof(GLuint), roadIndices.data(), GL_DYNAMIC_DRAW);
+
+		// VBO attributes (position and color)
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+	}
+}
+
 
 void OpenGLManager::renderRoad() {
 	if (this->movingShader == nullptr) {
@@ -1170,8 +1394,9 @@ void OpenGLManager::renderRoad() {
 	}
 }
 
+// Mountain Shader Renderer
 void OpenGLManager::renderRoad2() {
-	if (this->movingShader == nullptr) {
+	if (this->mountainShader == nullptr) {
 		this->shaderInitSuccess = false;
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "TraingleShader init fail", "couldn't make it", NULL);
 	}
@@ -1214,13 +1439,69 @@ void OpenGLManager::renderRoad2() {
 
 	}
 }
+
+// Render Road 2 but using new camera Object for View
+void OpenGLManager::renderRoad3() {
+	if (this->mountainShader == nullptr) {
+		this->shaderInitSuccess = false;
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "TraingleShader init fail", "couldn't make it", NULL);
+	}
+	else {
+		//Matrices
+
+		//	transformMatrice = glm::translate(transformMatrice, glm::vec3(0.5, 0.5f, 0.0f));
+		//	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f); // projection matrix
+		//glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		//	glm::mat4 ortho = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+
+		// note that we're translating the scene in the reverse direction of where we want to move
+
+		//////////
+		mountainShader->use();
+
+		GLfloat r = 0.5f;
+		GLfloat g = 0.5f;
+		GLfloat b = 0.5f;
+
+		glUniformMatrix4fv(mountTransform->location, 1, GL_FALSE, glm::value_ptr(transformMatrice)); // set pos
+		glUniformMatrix4fv(mountView, 1, GL_FALSE, glm::value_ptr(this->gameCamera->getView()));
+		glUniformMatrix4fv(mountProjection, 1, GL_FALSE, glm::value_ptr(projection));
+		//glUniformMatrix4fv(msView, 1, GL_FALSE, glm::value_ptr(ortho));
+
+
+		//glUniform4f(msColor->location, r, g, b, 1.0f);
+
+		//triangleShader->use();
+		//frameRate = SDL_GetTicks() - this->timeValue;
+		glBindVertexArray(this->roadVAO);
+
+
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		glDrawElements(GL_TRIANGLES, this->roadIndices.size(), GL_UNSIGNED_INT, 0);
+		SDL_GL_SwapWindow(glWindow);
+
+
+
+	}
+}
+
+
 void OpenGLManager::updateCameraView(glm::vec3 translation) {
 	this->view = glm::translate(this->view, translation);
 
 }
-void OpenGLManager::rotateCameraView(float angle, glm::vec3 vecAxis) {
-	this->view = glm::rotate(this->view, glm::radians(angle), vecAxis);
 
+void OpenGLManager::updateCameraView2(direction moveDirection) {
+	this->gameCamera->moveCamera(moveDirection);
+
+}
+
+
+void OpenGLManager::rotateCameraView2(direction directions) {
+	
+	//this->view = glm::rotate(this->view, glm::radians(angle), vecAxis);
+	this->gameCamera->rotateCamera(directions);
 }
 
 // Resolution of road (how many quads), Distance, End Points (xF, yF)

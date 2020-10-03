@@ -20,12 +20,14 @@
 
 class OpenGLManager {
 public:
-	OpenGLManager(SDL_Window* glWindow, gameEngine* gEngine);
+	OpenGLManager(SDL_Window* glWindow, gameEngine* gEngine, float* deltaTime);
 	~OpenGLManager();
 
 	void glewInitialize() { glewInit(); }
 
 	//void initShaders();
+
+	//void updateDeltaTime(float dTime) { this->gameDeltaTime = dTime; }
 
 	void update();
 
@@ -35,7 +37,9 @@ public:
 
 	bool getIsGLRunning() { return isGLRunning; }
 
-	void initShaders();
+	bool getUpdated() { return sceneUpdated; }
+	void setUpdated(bool isUpdated) { sceneUpdated = isUpdated; }
+	//void initShaders(); // These are initialized in the constructo rinstead now;
 
 //	bool RenderSomething(GLuint gProgramID); // bool is whether is was successful
 	bool RenderSomething(SDL_Window* glWindow); // bool is whether is was successful
@@ -47,9 +51,12 @@ public:
 	void generateRoad2(GLuint squares); //try 2 ( one column)
 	void generateRoad3(GLuint gridWidth, GLuint gridLength, GLuint squareWidth, GLuint squareLength);
 	void generateRoad4(GLuint gridWidth, GLuint gridLength, GLfloat squareWidth, GLfloat squareLength);
+	void generateRoad5(GLuint gridWidth, GLuint gridLength, GLfloat squareWidth, GLfloat squareLength);
 	//void generateRoad();
 	void renderRoad();
 	void renderRoad2(); // USed Mountain Shader
+	void renderRoad3(); // Same as 2 but using gameCamera for view
+
 	void renderMovingTriangle(GLuint VAO, GLuint VBO);
 	void renderMovingTriangleMat(GLuint VAO, GLuint VBO);
 	//bool createGLWindow(int width, int height, int flags);
@@ -59,7 +66,10 @@ public:
 	void updateVBO(GLuint& gVBO, GLuint& VAO, GLuint& EBO, GLfloat* vertices, int size, GLuint* indices, int indiceSize);
 // CAMERA STUFF
 	void updateCameraView(glm::vec3 newMatrix);
+	void updateCameraView2(direction moveDirection);
+
 	void rotateCameraView(float angle, glm::vec3 vecAxis);
+	void rotateCameraView2(direction directions);
 	//glm::mat4 getView();
 private:
 	int width = 800;
@@ -67,13 +77,18 @@ private:
 		float nearValue = 0.01f;
 		float farValue = 300.0f;
 	float timeValue = 0;
+
+	float* deltaTime;
+
 	//float timeDiff = 0;
 	GLuint gProgramID;
+	bool sceneUpdated = false;
 //Window Stuff
 	SDL_Window* glWindow;
 	SDL_GLContext glContext;
 // Game Camera
 	Camera* gameCamera;
+		
 //Shaders
 	Shader* triangleShader;
 	Shader* squareShader;

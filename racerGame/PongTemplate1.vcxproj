@@ -150,7 +150,9 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="math.cpp" />
+    <ClCompile Include="Physics\ModelLoader.cpp" />
     <ClCompile Include="OpenGLManager.cpp" />
+    <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="placeHolderMovementCode.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="gameEngine.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Physics\ModelLoader.h" />
+    <ClInclude Include="Physics\PhysicsManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="OpenGLManager.h" />

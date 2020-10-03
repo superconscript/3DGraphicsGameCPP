@@ -8,3 +8,10 @@ vector2d::vector2d(double x1, double y1) {
 	x = x1;
 	y = y1;
 }
+
+/*
+vector2d::vector2d(double x1, double y1) {
+	x = x1;
+	y = y1;
+}\
+*/

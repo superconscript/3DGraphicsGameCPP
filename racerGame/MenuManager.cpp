@@ -22,7 +22,7 @@ menuItem::menuItem(int width, int height, int xpos, int ypos, SDL_Color* color, 
 	this->r.x = position.x  * screenSize.x;
 	this->fixed = fixed; // whether the object is resizeable or not
 	this->defaultColor = defaultColor;
-	this->objectPointer = this;
+//	this->objectPointer = this;
 }
 menuItem::menuItem(vector2d size, vector2d position, SDL_Color* color, SDL_Renderer* ren, SDL_Color* defaultColor, bool fixed, vector2d screenSize) {
 	this->size.x = size.x / 100;
@@ -32,11 +32,12 @@ menuItem::menuItem(vector2d size, vector2d position, SDL_Color* color, SDL_Rende
 	this->renderer = ren;
 	this->color = color;
 	this->fixed = fixed;
+	this->defaultColor = defaultColor;
 	r.w = size.x * screenSize.x;
 	r.h = size.y * screenSize.y;
 	r.y = position.y * screenSize.y;
 	r.x = position.x * screenSize.x;
-	this->objectPointer = this;
+//	this->objectPointer = this;
 }
 
 void menuItem::clicked() {
@@ -82,7 +83,7 @@ void menuItem::changeTexture(const char* newTexture) { // To be Added
 
 }
 /*
-vector2d menuItem::getSize(vector2d ScreenSize) {
+vector2d menuItem::getSize(vector2d screenSize) {
 	vector2d actualSize = { this->size.x * ScreenSize.x, this->size.y * ScreenSize.y};
 	//double actualSize.x = this->size.x * screenWidth / 100;
 	return ; // Had to convert size (which is a proportion) to the acutal size it is on screen
@@ -108,10 +109,11 @@ void menuItem::Render() {
 	SDL_RenderFillRect(renderer, &r);
 	SDL_SetRenderDrawColor(renderer, defaultColor->r, defaultColor->g, defaultColor->b, defaultColor->a);
 	}
+/*
 void* menuItem::getObjPointer() {
 	return this->objectPointer;
 }
-
+*/
 
 ////////////	Basic Texture Button (ex. Image on button) ////////////////////////////////////////////////
 
@@ -127,7 +129,7 @@ textureMenuItem::textureMenuItem(int width, int height, int srcWidth, int srcHei
 	destRect.y = position.y * screenSize.y;
 	destRect.w = size.x * screenSize.x;
 	destRect.h = size.y * screenSize.y;
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	tex = TextureManager::LoadTexture(texture1, renderer);
 	/*
 	this->size.x = width;
@@ -154,7 +156,7 @@ textureMenuItem::textureMenuItem(vector2d size, int srcWidth, int srcHeight, vec
 	destRect.y = this->position.y * screenSize.y;
 	destRect.w = this->size.x * screenSize.x;
 	destRect.h = this->size.y * screenSize.y;
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	tex = TextureManager::LoadTexture(texture1, renderer);
 	/*
 	this->size = size;
@@ -197,7 +199,7 @@ textureStartButton::textureStartButton(vector2d size, int srcWidth, int srcHeigh
 	this->size = size;
 	this->position = position;
 	*/
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	this->Started = false;
 }
 //textureStartButton::~textureStartButton();
@@ -210,7 +212,7 @@ textureStartButton::textureStartButton(int width, int height, int srcWidth, int 
 	this->position.x = xpos;
 	this->position.y = ypos;
 	*/
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	this->Started = false;
 }
 
@@ -250,7 +252,7 @@ startButton::startButton(int width, int height, int xpos, int ypos, SDL_Color* c
 	this->position.x = xpos;
 	this->position.y = ypos;
 	*/
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	this->Started = false;
 }
 startButton::startButton(vector2d size, vector2d position, SDL_Color* color, SDL_Renderer* ren, SDL_Color* defaultColor, bool fixed, vector2d screenSize)
@@ -259,7 +261,7 @@ startButton::startButton(vector2d size, vector2d position, SDL_Color* color, SDL
 	this->size = size;
 	this->position = position;
 	*/
-	this->objectPointer = this;
+	//this->objectPointer = this;
 	this->Started = false;
 }
 //startButton::~startButton();

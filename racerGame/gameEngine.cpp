@@ -55,8 +55,10 @@ startButton* sB;
 
 ////////////////// Actual Engine ////////////////////////////////
 
-gameEngine::gameEngine()
-{}
+	gameEngine::gameEngine(float* deltaTime)
+	{
+		this->deltaTime = deltaTime;
+	}
 gameEngine::~gameEngine()
 {}
 
@@ -86,7 +88,8 @@ bool gameEngine::createGLWindow(int width, int height, int flags)
 	}
 	else
 	{
-		glManager = new OpenGLManager(glWindow, this);
+		glManager = new OpenGLManager(glWindow, this, this->deltaTime);
+		//isGLRunning = true;
 		/*
 		GLenum glewError = glewInit();
 		//	if(g != GLEW_)
@@ -231,7 +234,7 @@ bool gameEngine::createGLProgram() {
 
 
 
-					isGLRunning = true;
+					//isGLRunning = true;
 
 			
 		
@@ -298,7 +301,7 @@ void gameEngine::init(const char* title, int xpos, int ypos, int width, int heig
 	//Create our Players (which store the scores)
 	// Create our Paddle's
 
-	 //This is crashing, why?
+
 	keyMan = new KeyboardManager(0);
 	
 }
@@ -343,9 +346,10 @@ void gameEngine::handleEvents() // Handles Keyboard Events, windows closing etc.
 				menuMan->Resize(SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h); // Having problem with object slicing
 			}
 		}
-
+		break;
 
 			// Get Input From Keyboard
+	/*
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym) {
 				// W key
@@ -435,7 +439,9 @@ void gameEngine::handleEvents() // Handles Keyboard Events, windows closing etc.
 						break;
 
 					}
+
 			break;
+*/
 		case SDL_MOUSEMOTION: // Mouse moved
 			break;
 		case SDL_MOUSEBUTTONDOWN: //Mouse Click
@@ -459,7 +465,7 @@ void gameEngine::handleEvents() // Handles Keyboard Events, windows closing etc.
 
 	}
 }
-
+/*
 GLfloat newVertices[] = {	
 	//position		//color
 	
@@ -481,16 +487,18 @@ GLuint squareIndices[6]{
 
 };
 GLuint EBO;
+*/
 //glGenBuffers(1, &EBO); Since we're sending it we dont need it
 
 GLuint newVAO = 0;
 GLuint newVBO = 0;
 int updateCounter{ 0 };
-glm::vec3 rotationAxis = glm::vec3(0.0f, 0.5f, 0.0f);
+glm::vec3 rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
 float zoomSensitivity = 0.04f;
-float moveSensitivity = 0.01f;
+float moveSensitivity = 0.04f;
 float angleSensitivity = 5.0f;
 void gameEngine::glUpdate() { // Handle our OpenGL update
+	//glManager->updateDeltaTime(this->deltaTime);
 	//glManager->renderTriangle(VAO, gVBO, gProgramID);
 	if (updateCounter == 200) {
 		//glManager->updateVBO(newVBO, newVAO, EBO, newVertices, sizeof(newVertices), squareIndices, sizeof(squareIndices));
@@ -499,42 +507,117 @@ void gameEngine::glUpdate() { // Handle our OpenGL update
 		//						x1   y1     z1     x2     y2     z2    xf1   yf1   zf1    xf2   yf2   zf2  res   distance
 		//glManager->generateRoad2(100);
 		//glManager->generateRoad3(20, 20, 1, 1); works but rows aren't yet optimised
-		glManager->generateRoad4(200, 200, 0.1f, 0.1f); // doesn't work yet... UPDATE It Seems to work
+		glManager->generateRoad5(300, 200, 1.6f, 1.6f); // doesn't work yet... UPDATE It Seems to work
+		glManager->setUpdated(true);
 	}
-// Camera Movement Update
+//Translation	
+	if (keyMan->isActionActive(Actions::MOVE_FORWARD)) {
+	//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, zoomSensitivity));
+		glManager->updateCameraView2(direction::IN);
+		glManager->setUpdated(true);
+	}
+
+	if (keyMan->isActionActive(Actions::MOVE_BACKWARD)) {
+	//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, -1 * zoomSensitivity));
+		glManager->updateCameraView2(direction::BACK);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved out", NULL);
+		glManager->setUpdated(true);
+	}
+	if (keyMan->isActionActive(Actions::MOVE_LEFT)) {
+	//	glManager->updateCameraView(glm::vec3(moveSensitivity, 0.0f, 0.0f));
+		glManager->updateCameraView2(direction::LEFT);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved left", NULL);
+		glManager->setUpdated(true);
+	}
+	if (keyMan->isActionActive(Actions::MOVE_RIGHT)) {
+	//	glManager->updateCameraView(glm::vec3(-1 * moveSensitivity, 0.0f, 0.0f));
+		glManager->updateCameraView2(direction::RIGHT);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved right", NULL);
+		glManager->setUpdated(true);
+	}
+
+	if (keyMan->isActionActive(Actions::MOVE_UP)) {
+		//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, zoomSensitivity));
+		glManager->updateCameraView2(direction::UP);
+		glManager->setUpdated(true);
+	}
+
+	if (keyMan->isActionActive(Actions::MOVE_DOWN)) {
+		//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, -1 * zoomSensitivity));
+		glManager->updateCameraView2(direction::DOWN);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved out", NULL);
+		glManager->setUpdated(true);
+	}
+
+//Rotation
+	if (keyMan->isActionActive(Actions::ROTATE_UP)) {
+	//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, zoomSensitivity));
+		glManager->rotateCameraView2(direction::UP);
+		glManager->setUpdated(true);
+	}
+
+	if (keyMan->isActionActive(Actions::ROTATE_DOWN)) {
+	//	glManager->updateCameraView(glm::vec3(0.0f, 0.0f, -1 * zoomSensitivity));
+		glManager->rotateCameraView2(direction::DOWN);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved out", NULL);
+		glManager->setUpdated(true);
+	}
+	if (keyMan->isActionActive(Actions::ROTATE_LEFT)) {
+		//glManager->updateCameraView(glm::vec3(moveSensitivity, 0.0f, 0.0f));
+		glManager->rotateCameraView2(direction::LEFT);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved left", NULL);
+		glManager->setUpdated(true);
+	}
+	if (keyMan->isActionActive(Actions::ROTATE_RIGHT)) {
+		//glManager->updateCameraView(glm::vec3(-1 * moveSensitivity, 0.0f, 0.0f));
+		glManager->rotateCameraView2(direction::RIGHT);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved right", NULL);
+		glManager->setUpdated(true);
+	}
+// Camera Movement Update (Old code that was used with old Keyboard Manager)
+	/*
 	if (keyMan->getKeyValue(0) == 1) { 
 		glManager->updateCameraView(glm::vec3(0.0f, -1 * moveSensitivity, 0.0f));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved up", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(1) == 1) {
 		glManager->updateCameraView(glm::vec3(0.0f, 0.0f, zoomSensitivity));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved in", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(2) == 1) {
 		glManager->updateCameraView(glm::vec3(moveSensitivity, 0.0f, 0.0f));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved left", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(3) == 1) {
 		glManager->rotateCameraView(angleSensitivity, rotationAxis);
 		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've turned left", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(4) == 1) {
 		glManager->updateCameraView(glm::vec3(-1 * moveSensitivity, 0.0f, 0.0f));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved right", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(5) == 1) {
 		glManager->rotateCameraView(-1 * angleSensitivity, rotationAxis);
 		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've turned right", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(6) == 1) {
 		glManager->updateCameraView(glm::vec3(0.0f, moveSensitivity, 0.0f));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved down", NULL);
+		glManager->setUpdated(true);
 	}
 	if (keyMan->getKeyValue(7) == 1) {
 		glManager->updateCameraView(glm::vec3(0.0f, 0.0f, -1 * zoomSensitivity));
 	//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Key pressed", "should've moved out", NULL);
+		glManager->setUpdated(true);
 	}
-
+	*/
+// Updated for new Stuff
 	updateCounter++;
 }
 
@@ -555,7 +638,8 @@ void gameEngine::sdlUpdate() { // Handle SDL udpate stuff
 						//glClearColor(0.2f, 0.4f, 0.5f, 1.0f);
 						//glClear(GL_COLOR_BUFFER_BIT);
 						createGLProgram();
-						
+						isGLRunning = true;
+					
 				//	glManager->RenderSomething(glWindow);
 						SDL_RaiseWindow(glWindow);
 					}
@@ -629,14 +713,23 @@ void gameEngine::glRender() // Rendering for OPENGL
 //	SDL_GL_SwapWindow(glWindow);
 	//glManager->renderTriangle();
 	//glClearColor(0.f, 0.5f, 0.f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	//glManager->renderTriangle(newVAO, newVBO, EBO, gProgramID);
-	//glManager->renderMovingTriangleMat(newVAO, newVBO);
 
-	//glManager->renderRoad();
 
-	glManager->renderRoad2();
+	if (glManager->getUpdated() == true) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//glManager->renderTriangle(newVAO, newVBO, EBO, gProgramID);
+		//glManager->renderMovingTriangleMat(newVAO, newVBO);
+
+		//glManager->renderRoad();
+
+		//glManager->renderRoad2();
+
+		glManager->renderRoad3();
+		glManager->setUpdated(false);
+
+	}
+
 
 	//glManager->renderMovingTriangle(newVAO, newVBO);
 }
@@ -655,5 +748,7 @@ void gameEngine::clean()
 {
 	//SDL_DestroyWindow(window);
 	//SDL_DestroyRenderer(renderer);
+	//deltaTime = NULL;
 	SDL_Quit();
+
 }

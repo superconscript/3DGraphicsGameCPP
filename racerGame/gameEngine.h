@@ -15,7 +15,7 @@ class Shader;
 class gameEngine {
 
 public:
-	gameEngine();
+	gameEngine(float* deltaTime);
 	~gameEngine();
 
 	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
@@ -34,6 +34,9 @@ public:
 //Game State
 	bool running() { return isRunning; };
 
+//	void setDeltaTime(float dTime) { this->deltaTime = dTime; }
+	//float getDeltaTime() { return deltaTime; }
+
 	bool glRunning(){ return isGLRunning; };
 	bool sdlRunning() { return isSDLRunning; };
 //OpenGL stuff
@@ -44,9 +47,11 @@ public:
 	void useShader(GLuint ID) { glUseProgram(ID); };
 
 private:
-	bool isRunning;
-	bool isGLRunning;
-	bool isSDLRunning;
+	bool isRunning = false;
+	bool isGLRunning = false;
+	bool isSDLRunning = false;
+
+	float* deltaTime;
 //	GLuint gVBO = 0;
 //	GLuint gIBO = 0;
 //	GLuint gProgramID;

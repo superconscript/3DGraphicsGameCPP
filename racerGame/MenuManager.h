@@ -8,7 +8,7 @@ public:
 	menuItem(int width, int height, int xpos, int ypos, SDL_Color* color, SDL_Renderer* ren, SDL_Color* defaultColor, bool fixed, vector2d screenSize);
 	menuItem(vector2d size, vector2d position, SDL_Color* color, SDL_Renderer* ren, SDL_Color* defaultColor, bool fixed, vector2d screenSize);
 	~menuItem();
-	void* getObjPointer();
+//	void* getObjPointer();
 	SDL_Rect getMenuBox(); // these functions return the Actual Position (not the proportion position)
 	void virtual Resize(int screenWidth, int screenHeight);
 	void virtual Render();
@@ -19,8 +19,8 @@ public:
 	void unClick();
 	bool isStarted();
 	void virtual handleClick();
-	//vector2d getSize(vector2d ScreenSize); // returns converted size (not proportion)
-	void* objectPointer; // used to return the object from the vector menuArray
+	//vector2d getSize(vector2d screenSize); // returns converted size (not proportion)
+	//void* objectPointer; // used to return the object from the vector menuArray
 protected:
 	vector2d position;
 	vector2d size;

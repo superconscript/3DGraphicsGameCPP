@@ -1,12 +1,13 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
+
 //Paddle Sizing Settings
 
 // We need a racer class.
 
 //GameObject BaseClass
-
+/*
 gameObject::gameObject(char* texture1, vector2d size, vector2d position, SDL_Renderer* renderer)
 	: texture(texture1) {
 
@@ -34,3 +35,4 @@ aiRacer::aiRacer(char* texture1, vector2d size, vector2d position, SDL_Renderer*
 
 };
 // Player Racer inherits Racer;
+*/
