@@ -63,7 +63,7 @@ OpenGLManager::OpenGLManager(SDL_Window* glWindow, gameEngine* gameEngine, float
 	//updateVBO(newVBO, newVAO, initVertices, sizeof(initVertices) );
 	//this->gameCamera = new Camera(this->deltaTime);
 	
-	this->gameCamera = new Camera(this->deltaTime, 5.0f, glm::vec3(0,10,0));
+	this->gameCamera = new Camera(this->deltaTime, 5.0f, glm::vec3(15,10,0));
 }
 OpenGLManager::~OpenGLManager() {
 

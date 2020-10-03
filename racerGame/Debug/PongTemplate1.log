@@ -1,2 +1,41 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (PongTemplate1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  PongTemplate1.vcxproj -> C:\GL\racerGame\Debug\racerGame.exe
+  OpenGLManager.cpp
+C:\GL\racerGame\OpenGLManager.cpp(210,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(224,38): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(236,19): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(251,37): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(422,9): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(423,9): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(426,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(427,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(428,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(451,9): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(452,9): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(455,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(456,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(457,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(497,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(537,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(539,23): warning C4018: '<=': signed/unsigned mismatch
+C:\GL\racerGame\OpenGLManager.cpp(545,40): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=GLfloat
+          ]
+C:\GL\racerGame\OpenGLManager.cpp(950,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(951,19): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(956,35): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=GLfloat
+          ]
+C:\GL\racerGame\OpenGLManager.cpp(933,15): warning C4101: 'z': unreferenced local variable
+C:\GL\racerGame\OpenGLManager.cpp(1160,25): warning C4244: 'argument': conversion from 'GLuint' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(1161,19): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+C:\GL\racerGame\OpenGLManager.cpp(1172,30): warning C4244: 'argument': conversion from 'GLuint' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=GLfloat
+          ]
+C:\GL\racerGame\OpenGLManager.cpp(1143,15): warning C4101: 'z': unreferenced local variable
+LINK : fatal error LNK1168: cannot open C:\GL\racerGame\Debug\racerGame.exe for writing
