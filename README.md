@@ -1,5 +1,5 @@
 # 3DGraphicsGame
- ###  Creating a game using OpenGL (3.3) and SDL 2  
+ ###  Creating a game / game Engine using OpenGL (3.3) and SDL 2  
 ### I'm creating this project to better learn Graphics Progamming (OpenGL) and also improve in Game Development.  
 ----------------------------------------------------------------
 ### This project is coded with C++, using SDL 2 for input, audio, game menu rendering, and window creation with OpenGL being used for the actual game graphics.
