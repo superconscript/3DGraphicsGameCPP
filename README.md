@@ -14,3 +14,13 @@
  ## OpenGL will be used for Graphics.
     Currently have 3D capabalitiy. Camera view is controlled with WASD / arrow keys(forward,left,etc.) and Keypad for rotation. Space Bar and left Ctrl (Up and down)
     
+ ## Terrain Generation
+  ![terrain flat grid](/FlatGrid_OpenGL.png?raw=true "Flat Grid screenshot")
+ ### Currently I use a grid to generate terrain. I can adjust the size of each grid tile and the number of tiles in each row / column. I then use an equation to change the height values, producing a different terrain. 
+  ![terrain grid](/Wireframe_OPENGL_screenshot.png?raw=true "Grid screenshot")
+  ### Currently, color of the terrain is modulated by the height.
+   ![terrain grid](/OpenGL_Terrain_Smooth.png?raw=true "Grid screenshot")
+    
+## Gameplay
+ ### I completed user-controlled camera movement around the scene. However, I still need to add an actual "game" element. I originally thought I'd make a racing game with randomly generated terrain. However, the physics involved with that are more than I wish to implement right now. I'm thinking I'll make this game an arcade space / airplane dogfight game. I think I could tweak my terrain generation code to form a sphere instead. Thus allowing me to make randomly generated "planets".
+ 
