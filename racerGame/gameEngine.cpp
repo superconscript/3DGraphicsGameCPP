@@ -500,14 +500,15 @@ float angleSensitivity = 5.0f;
 void gameEngine::glUpdate() { // Handle our OpenGL update
 	//glManager->updateDeltaTime(this->deltaTime);
 	//glManager->renderTriangle(VAO, gVBO, gProgramID);
-	if (updateCounter == 200) {
+	if (updateCounter == 10) {
 		//glManager->updateVBO(newVBO, newVAO, EBO, newVertices, sizeof(newVertices), squareIndices, sizeof(squareIndices));
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "update vertices", "vertices have been updated", NULL);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Camera Controls", "Controls: Forward Left Right Back (WASD / Arrow Keys) Rotation: KP(8,4,6,2) Up / Down : spacebar, left ctrl", NULL);
 		//glManager->generateRoad(-1.0f, 0.8f, -0.5f, 1.0f, 0.8f, -0.5f, -0.7f, 0.0f, 5.1f, 0.4f, 0.0f, 5.1f, 20, 100);	
 		//						x1   y1     z1     x2     y2     z2    xf1   yf1   zf1    xf2   yf2   zf2  res   distance
 		//glManager->generateRoad2(100);
 		//glManager->generateRoad3(20, 20, 1, 1); works but rows aren't yet optimised
-		glManager->generateRoad5(300, 200, 1.6f, 1.6f); // doesn't work yet... UPDATE It Seems to work
+		glManager->generateRoad5(300, 200, 2.6f, 2.6f); // doesn't work yet... UPDATE It Seems to work
 		glManager->setUpdated(true);
 	}
 //Translation	

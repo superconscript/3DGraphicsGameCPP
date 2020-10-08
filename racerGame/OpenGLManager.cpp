@@ -1161,10 +1161,11 @@ void OpenGLManager::generateRoad5(GLuint gridWidth, GLuint gridLength, GLfloat s
 			float randSeed = (rand() * SDL_GetTicks()) % 5;
 			// 2 points per square
 		//Left Side
-			roadVBOVECTOR.push_back((squareWidth * x)); //x  Move over twice the square width (since we're not sharing vertices)
-			//roadVBOVECTOR.push_back(0.0f);
-			roadVBOVECTOR.push_back((sin(y + randSeed) * 5) + 4);
-			roadVBOVECTOR.push_back(-1 * zValue);
+			//Position
+			roadVBOVECTOR.push_back((squareWidth * x)); //x  Move over twice the square width (since we're not sharing vertices) X
+			//roadVBOVECTOR.push_back(0.0f); // To make it flat grid;
+			roadVBOVECTOR.push_back((sin(y + randSeed) * 2) + 4); // Y
+			roadVBOVECTOR.push_back(-1 * zValue); //Z
 			//Color
 			//roadVBOVECTOR.push_back(redValue);
 			roadVBOVECTOR.push_back(((float)((int)yValue % colorStep)) / colorStep);
@@ -1476,7 +1477,7 @@ void OpenGLManager::renderRoad3() {
 		glBindVertexArray(this->roadVAO);
 
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // WIREFRAME MODE
 
 		glDrawElements(GL_TRIANGLES, this->roadIndices.size(), GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(glWindow);
